@@ -7,7 +7,7 @@ namespace SKYPE_REVIVAL
     {
         //FORM FORM
         private int borderRadius = 30, borderSize = 2;
-        private Color borderColor = System.Drawing.Color.FromArgb(((int)(((byte)(18)))), ((int)(((byte)(18)))), ((int)(((byte)(18)))));
+        private Color borderColor = Color.FromArgb(18,18,18);
 
         public SKYPE()
         {
