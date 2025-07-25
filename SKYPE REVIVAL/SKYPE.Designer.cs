@@ -1,6 +1,6 @@
 ﻿namespace SKYPE_REVIVAL
 {
-    partial class Form1
+    partial class SKYPE
     {
         /// <summary>
         ///  Required designer variable.
@@ -30,17 +30,22 @@
         {
             this.SuspendLayout();
             // 
-            // Form1
+            // SKYPE
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1488, 926);
-            this.Name = "Form1";
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.ClientSize = new System.Drawing.Size(1129, 756);
+            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.Name = "SKYPE";
             this.Text = "Form1";
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.SKYPE_Paint);
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.SKYPE_MouseDown);
             this.ResumeLayout(false);
 
         }
 
         #endregion
+
     }
 }
