@@ -6,8 +6,8 @@ namespace SKYPE_REVIVAL
     public partial class SKYPE : Form
     {
         //FORM FORM
-        private int borderRadius = 30, borderSize = 2;
-        private Color borderColor = Color.FromArgb(18,18,18);
+        private int borderRadius = 15, borderSize = 2;
+        private Color borderColor = Color.FromArgb(1,1,1);
 
         public SKYPE()
         {
@@ -15,6 +15,14 @@ namespace SKYPE_REVIVAL
             this.FormBorderStyle = FormBorderStyle.None;
             this.Padding = new Padding(borderSize);
         }
+
+        #region BASIC TAB FEATURES
+        private void tabX_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+        #endregion
+
 
         #region ROUNDED CORNER
         [DllImport("user32.DLL", EntryPoint = "ReleaseCapture")]
@@ -25,7 +33,13 @@ namespace SKYPE_REVIVAL
         private void SKYPE_MouseDown(object sender, MouseEventArgs e)
         {
             ReleaseCapture();
-            SendMessage(this.Handle, 0x112, 0xf012, 0);
+            try
+            {
+                SendMessage(this.Handle, 0x112, 0xf012, 0);
+            }
+            catch (ObjectDisposedException)
+            {  
+            }
         }
 
         protected override CreateParams CreateParams
