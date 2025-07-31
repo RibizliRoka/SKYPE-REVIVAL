@@ -9,7 +9,6 @@ namespace SKYPE_REVIVAL
     public partial class SKYPE : Form
     {
         //GENERAL KNOW HOW
-        private static System.Timers.Timer globalTimer;
         private int mouseX = Cursor.Position.X, mouseY = Cursor.Position.Y;
         Rectangle screenSize = SystemInformation.WorkingArea;
         private int screenTopLeft, screenTopY;
@@ -20,7 +19,6 @@ namespace SKYPE_REVIVAL
         private Boolean mouseInField = false;
         private Size formSize = new Size(1500, 900);
         private Point spawnPoint = new Point(0, 0);
-        Rectangle highBorderPatrol, lowBorderPatrol, leftBorderPatrol, rightBorderPatrol;
 
         #region INIT CRAP
         public SKYPE()
@@ -32,35 +30,9 @@ namespace SKYPE_REVIVAL
             this.Padding = new Padding(borderSize);
             this.Size = formSize;
             this.Location = spawnPoint;
-
-            globalTimer = new System.Timers.Timer();
-            globalTimer.Interval = 200;
-            globalTimer.Elapsed += reloadWorld;
-            globalTimer.AutoReset = true;
-            globalTimer.Enabled = true;
-            borderScan();
         }
 
-        public void reloadWorld(object source, ElapsedEventArgs e)
-        {
-            if (highBorderPatrol.Contains(Cursor.Position))
-            {
-                this.Cursor = Cursors.SizeNS;
-            }
-            else if (lowBorderPatrol.Contains(Cursor.Position))
-            {
-                this.Cursor = Cursors.SizeNS;
-            }
-            else
-            {
-                this.Cursor = Cursors.Default;
-            }
-        }
-        public void borderScan()
-        {
-            highBorderPatrol = new Rectangle(spawnPoint, new Size(15, formSize.Height));
-            lowBorderPatrol = new Rectangle(new Point(spawnPoint.X, spawnPoint.Y - (formSize.Height - 15)), new Size(15, formSize.Height));
-        }
+    
 
         #endregion
 
@@ -116,12 +88,6 @@ namespace SKYPE_REVIVAL
         private void SKYPE_Paint(object sender, PaintEventArgs e)
         {
             FormRegionAndBorder(this, borderRadius, e.Graphics, borderColor, borderSize);
-
-            using (Pen bluePen = new Pen(Color.Blue, 3))
-            {
-               
-                e.Graphics.DrawRectangle(bluePen,highBorderPatrol.X, highBorderPatrol.Y, highBorderPatrol.Width, highBorderPatrol.Height);
-            }
         }
 
         private void FormRegionAndBorder(Form form, float radius, Graphics graph, Color borderColor, float borderSize)
@@ -148,11 +114,6 @@ namespace SKYPE_REVIVAL
                     }
                 }
             }
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-            label1.Text = "x = " + mouseX.ToString() + " y = " + mouseY.ToString();
         }
     }
     #endregion

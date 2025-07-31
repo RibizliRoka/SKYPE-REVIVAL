@@ -23,7 +23,6 @@
             ProfileBar = new Panel();
             NameBar = new Panel();
             tabX = new Panel();
-            label1 = new Label();
             FormToolBar.SuspendLayout();
             SuspendLayout();
             // 
@@ -96,23 +95,12 @@
             tabX.Click += tabX_Click;
             tabX.MouseClick += SKYPE_MouseDown;
             // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Location = new Point(0, 0);
-            label1.Name = "label1";
-            label1.Size = new Size(59, 25);
-            label1.TabIndex = 4;
-            label1.Text = "label1";
-            label1.Click += label1_Click;
-            // 
             // SKYPE
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(14, 14, 14);
             ClientSize = new Size(1469, 883);
-            Controls.Add(label1);
             Controls.Add(tabX);
             Controls.Add(NameBar);
             Controls.Add(FormToolBar);
@@ -127,7 +115,6 @@
             MouseDown += SKYPE_MouseDown;
             FormToolBar.ResumeLayout(false);
             ResumeLayout(false);
-            PerformLayout();
 
         }
 
@@ -140,7 +127,6 @@
         private Panel ContactsBar;
         private Panel FunctionsBar;
         private Panel tabX;
-        private Label label1;
     }
 
     
