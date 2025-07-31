@@ -1,20 +1,68 @@
-using System.Runtime.InteropServices;
+using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Runtime.InteropServices;
+using System.Timers;
+using System.Windows.Forms;
 
 namespace SKYPE_REVIVAL
 {
     public partial class SKYPE : Form
     {
-        //FORM FORM
-        private int borderRadius = 15, borderSize = 2;
-        private Color borderColor = Color.FromArgb(1,1,1);
+        //GENERAL KNOW HOW
+        private static System.Timers.Timer globalTimer;
+        private int mouseX = Cursor.Position.X, mouseY = Cursor.Position.Y;
+        Rectangle screenSize = SystemInformation.WorkingArea;
+        private int screenTopLeft, screenTopY;
 
+        //FORM SHAPE
+        private int borderRadius = 15, borderSize = 2;
+        private Color borderColor = Color.FromArgb(1, 1, 1);
+        private Boolean mouseInField = false;
+        private Size formSize = new Size(1500, 900);
+        private Point spawnPoint = new Point(0, 0);
+        Rectangle highBorderPatrol, lowBorderPatrol, leftBorderPatrol, rightBorderPatrol;
+
+        #region INIT CRAP
         public SKYPE()
         {
             InitializeComponent();
+            screenTopLeft = screenSize.X;
+            screenTopY = screenSize.Y;
             this.FormBorderStyle = FormBorderStyle.None;
             this.Padding = new Padding(borderSize);
+            this.Size = formSize;
+            this.Location = spawnPoint;
+
+            globalTimer = new System.Timers.Timer();
+            globalTimer.Interval = 200;
+            globalTimer.Elapsed += reloadWorld;
+            globalTimer.AutoReset = true;
+            globalTimer.Enabled = true;
+            borderScan();
         }
+
+        public void reloadWorld(object source, ElapsedEventArgs e)
+        {
+            if (highBorderPatrol.Contains(Cursor.Position))
+            {
+                this.Cursor = Cursors.SizeNS;
+            }
+            else if (lowBorderPatrol.Contains(Cursor.Position))
+            {
+                this.Cursor = Cursors.SizeNS;
+            }
+            else
+            {
+                this.Cursor = Cursors.Default;
+            }
+        }
+        public void borderScan()
+        {
+            highBorderPatrol = new Rectangle(spawnPoint, new Size(15, formSize.Height));
+            lowBorderPatrol = new Rectangle(new Point(spawnPoint.X, spawnPoint.Y - (formSize.Height - 15)), new Size(15, formSize.Height));
+        }
+
+        #endregion
 
         #region BASIC TAB FEATURES
         private void tabX_Click(object sender, EventArgs e)
@@ -38,7 +86,7 @@ namespace SKYPE_REVIVAL
                 SendMessage(this.Handle, 0x112, 0xf012, 0);
             }
             catch (ObjectDisposedException)
-            {  
+            {
             }
         }
 
@@ -68,19 +116,25 @@ namespace SKYPE_REVIVAL
         private void SKYPE_Paint(object sender, PaintEventArgs e)
         {
             FormRegionAndBorder(this, borderRadius, e.Graphics, borderColor, borderSize);
+
+            using (Pen bluePen = new Pen(Color.Blue, 3))
+            {
+               
+                e.Graphics.DrawRectangle(bluePen,highBorderPatrol.X, highBorderPatrol.Y, highBorderPatrol.Width, highBorderPatrol.Height);
+            }
         }
 
         private void FormRegionAndBorder(Form form, float radius, Graphics graph, Color borderColor, float borderSize)
         {
-            if(this.WindowState != FormWindowState.Maximized)
+            if (this.WindowState != FormWindowState.Maximized)
             {
                 using (GraphicsPath roundPath = GetRoundedPath(form.ClientRectangle, radius))
-                    using (Pen penBorder = new Pen(borderColor, borderSize))
-                    using (Matrix transform = new Matrix())
+                using (Pen penBorder = new Pen(borderColor, borderSize))
+                using (Matrix transform = new Matrix())
                 {
                     graph.SmoothingMode = SmoothingMode.AntiAlias;
                     form.Region = new Region(roundPath);
-                    if(borderSize>=1)
+                    if (borderSize >= 1)
                     {
                         Rectangle rect = form.ClientRectangle;
                         float scaleX = 1.0F - ((borderSize + 1) / rect.Width);
@@ -94,6 +148,11 @@ namespace SKYPE_REVIVAL
                     }
                 }
             }
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+            label1.Text = "x = " + mouseX.ToString() + " y = " + mouseY.ToString();
         }
     }
     #endregion
