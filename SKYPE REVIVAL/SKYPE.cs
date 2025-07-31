@@ -13,17 +13,21 @@ namespace SKYPE_REVIVAL
         Rectangle screenSize = SystemInformation.WorkingArea;
         private int screenTopLeft, screenTopY;
 
-        //FORM SHAPE
+        //FORM COLORS
         private int borderRadius = 15, borderSize = 2;
         private Color borderColor = Color.FromArgb(1, 1, 1);
-        private Boolean mouseInField = false;
+        private Color invisibleColor = Color.FromArgb(0, 1, 1, 1);
+
+        //FORM SIZES AND RATIOS
         private Size formSize = new Size(1500, 900);
         private Point spawnPoint = new Point(0, 0);
+        private Size formSideBarSize;
 
         #region INIT CRAP
         public SKYPE()
         {
             InitializeComponent();
+            initBorderPatrol();
             screenTopLeft = screenSize.X;
             screenTopY = screenSize.Y;
             this.FormBorderStyle = FormBorderStyle.None;
@@ -31,8 +35,28 @@ namespace SKYPE_REVIVAL
             this.Size = formSize;
             this.Location = spawnPoint;
         }
+        public void initElements()
+        {
+            this.FormServiceBar.Size = new Size(formSize.Width, 25);
+            formSideBarSize = new Size(480, formSize.Height);
 
-    
+            this.ProfileBar.Size = new Size(formSideBarSize.Width, 190);
+            this.FunctionsBar.Size = new Size(formSideBarSize.Width, 140);
+            this.ContactsBar.Size = new Size(formSideBarSize.Width, 680);
+
+            this.NameBar.Size = new Size(formSize.Width - formSideBarSize.Width, 85);
+        }
+        public void initBorderPatrol()
+        {
+            int draggerThickness = 20;
+            this.borderPatrolHigh.Size = new Size(formSize.Width-(2*draggerThickness), draggerThickness);
+            this.borderPatrolHigh.Location = new Point(spawnPoint.X+draggerThickness, spawnPoint.Y);
+            this.borderPatrolHigh.BackColor = invisibleColor;
+
+            this.borderPatrolLow.Size = new Size(formSize.Width - (2 * draggerThickness), draggerThickness);
+            this.borderPatrolLow.Location = new Point(spawnPoint.X+draggerThickness, (spawnPoint.Y+formSize.Height)-draggerThickness);
+            this.borderPatrolLow.BackColor = invisibleColor;
+        }
 
         #endregion
 
@@ -44,7 +68,7 @@ namespace SKYPE_REVIVAL
         #endregion
 
 
-        #region ROUNDED CORNER
+        #region DRAG FORM
         [DllImport("user32.DLL", EntryPoint = "ReleaseCapture")]
         private extern static void ReleaseCapture();
         [DllImport("user32.DLL", EntryPoint = "SendMessage")]
@@ -61,7 +85,29 @@ namespace SKYPE_REVIVAL
             {
             }
         }
+        private void ContactsBar_MouseDown(object sender, MouseEventArgs e)
+        {
+            SKYPE_MouseDown(sender, e);
+        }
+        private void FunctionsBar_MouseDown(object sender, MouseEventArgs e)
+        {
+            SKYPE_MouseDown(sender, e);
+        }
+        private void ProfileBar_MouseDown(object sender, MouseEventArgs e)
+        {
+            SKYPE_MouseDown(sender, e);
+        }
+        private void NameBar_MouseDown(object sender, MouseEventArgs e)
+        {
+            SKYPE_MouseDown(sender, e);
+        }
+        private void FormServiceBar_MouseDown(object sender, MouseEventArgs e)
+        {
+            SKYPE_MouseDown(sender, e);
+        }
+        #endregion
 
+        #region ROUNDED CORNER
         protected override CreateParams CreateParams
         {
             get
@@ -114,7 +160,7 @@ namespace SKYPE_REVIVAL
                     }
                 }
             }
-        }
+        }        
     }
     #endregion
 }
