@@ -21,13 +21,15 @@ namespace SKYPE_REVIVAL
         //FORM SIZES AND RATIOS
         private Size formSize = new Size(1500, 900);
         private Point spawnPoint = new Point(0, 0);
-        private Size formSideBarSize;
+        private int FSBVeriLength, serviceBThickness = 25, profileBThickness, functionsBThickness, contactsBThickness, nameBThickness;
+        private int FSBHoriLength;
 
         #region INIT CRAP
         public SKYPE()
         {
             InitializeComponent();
             initBorderPatrol();
+            initElements();
             screenTopLeft = screenSize.X;
             screenTopY = screenSize.Y;
             this.FormBorderStyle = FormBorderStyle.None;
@@ -37,14 +39,31 @@ namespace SKYPE_REVIVAL
         }
         public void initElements()
         {
-            this.FormServiceBar.Size = new Size(formSize.Width, 25);
-            formSideBarSize = new Size(480, formSize.Height);
+            FSBVeriLength = formSize.Height;
+            FSBHoriLength = 480;
+            profileBThickness = 190;
+            functionsBThickness = 140;
+            contactsBThickness = 680;
+            nameBThickness = 85;
 
-            this.ProfileBar.Size = new Size(formSideBarSize.Width, 190);
-            this.FunctionsBar.Size = new Size(formSideBarSize.Width, 140);
-            this.ContactsBar.Size = new Size(formSideBarSize.Width, 680);
+            //constants
+            this.FormServiceBar.Size = new Size(formSize.Width, serviceBThickness);
+            this.FormServiceBar.Location = spawnPoint;
 
-            this.NameBar.Size = new Size(formSize.Width - formSideBarSize.Width, 85);
+            //sidebar
+            this.ProfileBar.Size = new Size(FSBHoriLength, profileBThickness);
+            this.ProfileBar.Location = new Point(spawnPoint.X, spawnPoint.Y + serviceBThickness);
+
+            this.FunctionsBar.Size = new Size(FSBHoriLength, functionsBThickness);
+            this.FunctionsBar.Location = new Point(spawnPoint.X, spawnPoint.Y + serviceBThickness + profileBThickness);
+
+            int startingPointContBar = spawnPoint.Y + serviceBThickness + profileBThickness + functionsBThickness;
+            this.ContactsBar.Size = new Size(FSBHoriLength, formSize.Height - startingPointContBar);
+            this.ContactsBar.Location = new Point(spawnPoint.X, startingPointContBar);
+
+            //other
+            this.NameBar.Size = new Size(formSize.Width - FSBHoriLength, nameBThickness);
+            this.NameBar.Location = new Point(spawnPoint.X + FSBHoriLength, spawnPoint.Y + serviceBThickness);
         }
         public void initBorderPatrol()
         {
