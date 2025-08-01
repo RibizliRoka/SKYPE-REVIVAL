@@ -17,7 +17,7 @@
         private void InitializeComponent()
         {
             FormServiceBar = new Panel();
-            FormToolBar = new Panel();
+            FSB = new Panel();
             ContactsBar = new Panel();
             FunctionsBar = new Panel();
             ProfileBar = new Panel();
@@ -25,7 +25,7 @@
             tabX = new Panel();
             borderPatrolHigh = new Panel();
             borderPatrolLow = new Panel();
-            FormToolBar.SuspendLayout();
+            FSB.SuspendLayout();
             SuspendLayout();
             // 
             // FormServiceBar
@@ -37,16 +37,16 @@
             FormServiceBar.TabIndex = 0;
             FormServiceBar.MouseDown += FormServiceBar_MouseDown;
             // 
-            // FormToolBar
+            // FSB
             // 
-            FormToolBar.BackColor = Color.FromArgb(18, 18, 18);
-            FormToolBar.Controls.Add(ContactsBar);
-            FormToolBar.Controls.Add(FunctionsBar);
-            FormToolBar.Controls.Add(ProfileBar);
-            FormToolBar.Location = new Point(0, 38);
-            FormToolBar.Name = "FormToolBar";
-            FormToolBar.Size = new Size(402, 845);
-            FormToolBar.TabIndex = 1;
+            FSB.BackColor = Color.Lime;
+            FSB.Controls.Add(ContactsBar);
+            FSB.Controls.Add(FunctionsBar);
+            FSB.Controls.Add(ProfileBar);
+            FSB.Location = new Point(0, 38);
+            FSB.Name = "FSB";
+            FSB.Size = new Size(402, 845);
+            FSB.TabIndex = 1;
             // 
             // ContactsBar
             // 
@@ -60,7 +60,7 @@
             // 
             // FunctionsBar
             // 
-            FunctionsBar.BackColor = Color.FromArgb(1, 1, 1);
+            FunctionsBar.BackColor = Color.FromArgb(14, 1, 14);
             FunctionsBar.Location = new Point(0, 159);
             FunctionsBar.Name = "FunctionsBar";
             FunctionsBar.Size = new Size(402, 101);
@@ -124,7 +124,7 @@
             Controls.Add(borderPatrolHigh);
             Controls.Add(tabX);
             Controls.Add(NameBar);
-            Controls.Add(FormToolBar);
+            Controls.Add(FSB);
             Controls.Add(FormServiceBar);
             ForeColor = Color.White;
             Location = new Point(100, 100);
@@ -135,7 +135,7 @@
             Text = "SKYPE REVIVAL";
             Paint += SKYPE_Paint;
             MouseDown += SKYPE_MouseDown;
-            FormToolBar.ResumeLayout(false);
+            FSB.ResumeLayout(false);
             ResumeLayout(false);
 
         }
@@ -143,7 +143,7 @@
         #endregion
 
         private Panel FormServiceBar;
-        private Panel FormToolBar;
+        private Panel FSB;
         private Panel ProfileBar;
         private Panel NameBar;
         private Panel ContactsBar;
