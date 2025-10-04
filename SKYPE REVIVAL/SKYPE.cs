@@ -1,5 +1,7 @@
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Timers;
 using System.Windows.Forms;
@@ -9,44 +11,51 @@ namespace SKYPE_REVIVAL
     public partial class SKYPE : Form
     {
         //GENERAL KNOW HOW
-        private int mouseX = Cursor.Position.X, mouseY = Cursor.Position.Y;
+        private int globalMouseX = Cursor.Position.X, globalMouseY = Cursor.Position.Y;
         Rectangle screenSize = SystemInformation.WorkingArea;
         private int screenTopLeft, screenTopY;
 
         //FORM COLORS
         private int borderRadius = 15, borderSize = 2;
         private Color borderColor = Color.FromArgb(1, 1, 1);
-        private Color invisibleColor = Color.FromArgb(0, 1, 1, 1);
 
         //FORM SIZES AND RATIOS
         private Size formSize = new Size(1500, 900);
+        private Point formLocation = new Point(0, 0);
         private Point spawnPoint = new Point(0, 0);
-        private int FSBVeriLength, serviceBThickness = 40, profileBThickness, functionsBThickness, contactsBThickness, nameBThickness;
+        private int FSBVeriLength, serviceBThickness = 40, profileBThickness, functionsBThickness, nameBThickness;
         private int FSBHoriLength;
 
-        #region INIT CRAP
+        //TIMERS
+        private enum dragDirection
+        {
+            HIGH, LOW, LEFT, RIGHT, TOPLEFT, TOPRIGHT, BOTTOMLEFT, BOTTOMRIGHT
+        }
+        private static dragDirection curserDragDir;
+        private static System.Timers.Timer dragTime;
+
+        #region INIT
         public SKYPE()
         {
             InitializeComponent();
             initBorderPatrol();
-            initElements();
+            initMainPanels();
             screenTopLeft = screenSize.X;
             screenTopY = screenSize.Y;
             this.FormBorderStyle = FormBorderStyle.None;
             this.Padding = new Padding(borderSize);
-            this.Size = formSize;
-            this.Location = spawnPoint;
         }
-        public void initElements()
+        public void initMainPanels()
         {
             FSBVeriLength = formSize.Height;
             FSBHoriLength = 480;
             profileBThickness = 190;
             functionsBThickness = 140;
-            contactsBThickness = 680;
             nameBThickness = 85;
 
             //constants
+            this.Size = formSize;
+            this.Location = formLocation;
             this.FormServiceBar.Size = new Size(formSize.Width, serviceBThickness);
             this.FormServiceBar.Location = spawnPoint;
 
@@ -74,24 +83,102 @@ namespace SKYPE_REVIVAL
         public void initBorderPatrol()
         {
             int draggerThickness = 20;
-            this.borderPatrolHigh.Size = new Size(formSize.Width-(2*draggerThickness), draggerThickness);
-            this.borderPatrolHigh.Location = new Point(spawnPoint.X+draggerThickness, spawnPoint.Y);
-            this.borderPatrolHigh.BackColor = invisibleColor;
+            this.borderPatrolHigh.Size = new Size(formSize.Width - (2 * draggerThickness), draggerThickness);
+            this.borderPatrolHigh.Location = new Point(spawnPoint.X + draggerThickness, spawnPoint.Y);
 
             this.borderPatrolLow.Size = new Size(formSize.Width - (2 * draggerThickness), draggerThickness);
-            this.borderPatrolLow.Location = new Point(spawnPoint.X+draggerThickness, (spawnPoint.Y+formSize.Height)-draggerThickness);
-            this.borderPatrolLow.BackColor = invisibleColor;
-        }
+            this.borderPatrolLow.Location = new Point(spawnPoint.X + draggerThickness, (spawnPoint.Y + formSize.Height) - draggerThickness);
 
+            this.borderPatrolRight.Size = new Size(draggerThickness, formSize.Height - (2 * draggerThickness));
+            this.borderPatrolRight.Location = new Point((spawnPoint.X + formSize.Width) - draggerThickness, spawnPoint.Y + draggerThickness);
+
+            this.borderPatrolLeft.Size = new Size(draggerThickness, formSize.Height - (2 * draggerThickness));
+            this.borderPatrolLeft.Location = new Point(spawnPoint.X, spawnPoint.Y + draggerThickness);
+
+            this.borderPatrolTopLeft.Size = new Size(draggerThickness, draggerThickness);
+            this.borderPatrolTopLeft.Location = spawnPoint;
+
+            this.borderPatrolTopRight.Size = new Size(draggerThickness, draggerThickness);
+            this.borderPatrolTopRight.Location = new Point(spawnPoint.X + formSize.Width - draggerThickness, spawnPoint.Y);
+
+            this.borderPatrolBottomRight.Size = new Size(draggerThickness, draggerThickness);
+            this.borderPatrolBottomRight.Location = new Point(spawnPoint.X + formSize.Width - draggerThickness, spawnPoint.Y + formSize.Height - draggerThickness);
+
+            this.borderPatrolBottomLeft.Size = new Size(draggerThickness, draggerThickness);
+            this.borderPatrolBottomLeft.Location = new Point(spawnPoint.X, spawnPoint.Y + formSize.Height - draggerThickness);
+
+            dragTime = new System.Timers.Timer(200);
+            dragTime.Elapsed += OnTimedEvent;
+            dragTime.AutoReset = true;
+            dragTime.Enabled = false;
+        }
         #endregion
 
-        #region BASIC TAB FEATURES
+        #region FORM RESIZE
+        private void updateMainPanels()
+        {
+            this.Size = formSize;
+            this.Location = formLocation;
+        }
+        private void OnTimedEvent(Object source, ElapsedEventArgs e)
+        {
+            switch (curserDragDir)
+            {
+                case dragDirection.HIGH:
+                    {
+                        formLocation = new Point(formLocation.X, globalMouseY);
+                        formSize = new Size(formSize.Width, formSize.Height);
+                        break;
+                    }
+                case dragDirection.LOW:
+                    {
+                        break;
+                    }
+                case dragDirection.RIGHT:
+                    {
+                        break;
+                    }
+                case dragDirection.LEFT:
+                    {
+                        break;
+                    }
+                case dragDirection.TOPLEFT:
+                    {
+                        break;
+                    }
+                case dragDirection.TOPRIGHT:
+                    {
+                        break;
+                    }
+                case dragDirection.BOTTOMLEFT:
+                    {
+                        break;
+                    }
+                case dragDirection.BOTTOMRIGHT:
+                    {
+                        break;
+                    }
+                default: break;
+            }
+        }
+        private void borderPatrolHigh_MouseDown(object sender, MouseEventArgs e)
+        {
+            curserDragDir = dragDirection.HIGH;
+            dragTime.Enabled = true;
+        }
+        private void borderPatrolHigh_MouseUp(object sender, MouseEventArgs e)
+        {
+            dragTime.Enabled = false;
+            updateMainPanels();
+        }
+        #endregion
+
+        #region CLOSE, MAXIMIZE, MINIMIZE
         private void tabX_Click(object sender, EventArgs e)
         {
             this.Close();
         }
         #endregion
-
 
         #region DRAG FORM
         [DllImport("user32.DLL", EntryPoint = "ReleaseCapture")]
@@ -142,7 +229,6 @@ namespace SKYPE_REVIVAL
                 return cp;
             }
         }
-
         private GraphicsPath GetRoundedPath(Rectangle rect, float radius)
         {
             GraphicsPath path = new GraphicsPath();
@@ -185,7 +271,8 @@ namespace SKYPE_REVIVAL
                     }
                 }
             }
-        }        
+        }
+      
     }
     #endregion
 }

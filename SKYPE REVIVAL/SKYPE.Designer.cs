@@ -23,8 +23,14 @@
             ProfileBar = new Panel();
             NameBar = new Panel();
             tabX = new Panel();
-            borderPatrolHigh = new Panel();
-            borderPatrolLow = new Panel();
+            borderPatrolHigh = new TransparentPanel();
+            borderPatrolLow = new TransparentPanel();
+            borderPatrolRight = new TransparentPanel();
+            borderPatrolLeft = new TransparentPanel();
+            borderPatrolTopLeft = new TransparentPanel();
+            borderPatrolBottomLeft = new TransparentPanel();
+            borderPatrolTopRight = new TransparentPanel();
+            borderPatrolBottomRight = new TransparentPanel();
             FSB.SuspendLayout();
             SuspendLayout();
             // 
@@ -98,21 +104,77 @@
             // 
             // borderPatrolHigh
             // 
-            borderPatrolHigh.BackColor = Color.FromArgb(0, 128, 255, 128);
+            borderPatrolHigh.BackColor = Color.Lime;
             borderPatrolHigh.Cursor = Cursors.SizeNS;
             borderPatrolHigh.Location = new Point(20, 0);
             borderPatrolHigh.Name = "borderPatrolHigh";
             borderPatrolHigh.Size = new Size(1460, 20);
             borderPatrolHigh.TabIndex = 4;
+            borderPatrolHigh.MouseDown += borderPatrolHigh_MouseDown;
+            borderPatrolHigh.MouseUp += borderPatrolHigh_MouseUp;
             // 
             // borderPatrolLow
             // 
-            borderPatrolLow.BackColor = Color.FromArgb(0, 128, 255, 128);
+            borderPatrolLow.BackColor = Color.Lime;
             borderPatrolLow.Cursor = Cursors.SizeNS;
             borderPatrolLow.Location = new Point(20, 880);
             borderPatrolLow.Name = "borderPatrolLow";
             borderPatrolLow.Size = new Size(1460, 20);
             borderPatrolLow.TabIndex = 5;
+            // 
+            // borderPatrolRight
+            // 
+            borderPatrolRight.BackColor = Color.Lime;
+            borderPatrolRight.Cursor = Cursors.SizeWE;
+            borderPatrolRight.Location = new Point(1475, 12);
+            borderPatrolRight.Name = "borderPatrolRight";
+            borderPatrolRight.Size = new Size(31, 871);
+            borderPatrolRight.TabIndex = 6;
+            // 
+            // borderPatrolLeft
+            // 
+            borderPatrolLeft.BackColor = Color.Lime;
+            borderPatrolLeft.Cursor = Cursors.SizeWE;
+            borderPatrolLeft.Location = new Point(0, 12);
+            borderPatrolLeft.Name = "borderPatrolLeft";
+            borderPatrolLeft.Size = new Size(25, 868);
+            borderPatrolLeft.TabIndex = 7;
+            // 
+            // borderPatrolTopLeft
+            // 
+            borderPatrolTopLeft.BackColor = Color.Magenta;
+            borderPatrolTopLeft.Cursor = Cursors.SizeNWSE;
+            borderPatrolTopLeft.Location = new Point(0, 0);
+            borderPatrolTopLeft.Name = "borderPatrolTopLeft";
+            borderPatrolTopLeft.Size = new Size(25, 32);
+            borderPatrolTopLeft.TabIndex = 8;
+            // 
+            // borderPatrolBottomLeft
+            // 
+            borderPatrolBottomLeft.BackColor = Color.Magenta;
+            borderPatrolBottomLeft.Cursor = Cursors.SizeNESW;
+            borderPatrolBottomLeft.Location = new Point(0, 868);
+            borderPatrolBottomLeft.Name = "borderPatrolBottomLeft";
+            borderPatrolBottomLeft.Size = new Size(25, 32);
+            borderPatrolBottomLeft.TabIndex = 9;
+            // 
+            // borderPatrolTopRight
+            // 
+            borderPatrolTopRight.BackColor = Color.Magenta;
+            borderPatrolTopRight.Cursor = Cursors.SizeNESW;
+            borderPatrolTopRight.Location = new Point(1475, 0);
+            borderPatrolTopRight.Name = "borderPatrolTopRight";
+            borderPatrolTopRight.Size = new Size(28, 20);
+            borderPatrolTopRight.TabIndex = 10;
+            // 
+            // borderPatrolBottomRight
+            // 
+            borderPatrolBottomRight.BackColor = Color.Magenta;
+            borderPatrolBottomRight.Cursor = Cursors.SizeNWSE;
+            borderPatrolBottomRight.Location = new Point(1475, 868);
+            borderPatrolBottomRight.Name = "borderPatrolBottomRight";
+            borderPatrolBottomRight.Size = new Size(28, 32);
+            borderPatrolBottomRight.TabIndex = 11;
             // 
             // SKYPE
             // 
@@ -120,6 +182,12 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(14, 14, 14);
             ClientSize = new Size(1500, 900);
+            Controls.Add(borderPatrolBottomRight);
+            Controls.Add(borderPatrolTopRight);
+            Controls.Add(borderPatrolBottomLeft);
+            Controls.Add(borderPatrolTopLeft);
+            Controls.Add(borderPatrolLeft);
+            Controls.Add(borderPatrolRight);
             Controls.Add(borderPatrolLow);
             Controls.Add(borderPatrolHigh);
             Controls.Add(tabX);
@@ -149,8 +217,14 @@
         private Panel ContactsBar;
         private Panel FunctionsBar;
         private Panel tabX;
-        private Panel borderPatrolHigh;
-        private Panel borderPatrolLow;
+        private TransparentPanel borderPatrolHigh;
+        private TransparentPanel borderPatrolLow;
+        private TransparentPanel borderPatrolRight;
+        private TransparentPanel borderPatrolLeft;
+        private TransparentPanel borderPatrolTopLeft;
+        private TransparentPanel borderPatrolBottomLeft;
+        private TransparentPanel borderPatrolTopRight;
+        private TransparentPanel borderPatrolBottomRight;
     }
 
     
@@ -163,7 +237,7 @@ public class TransparentPanel : Panel
         get
         {
             CreateParams cp = base.CreateParams;
-            cp.ExStyle |= 0x00000020; // WS_EX_TRANSPARENT
+            cp.ExStyle |= 0x00000020;
             return cp;
         }
     }
